@@ -11,7 +11,7 @@ diffs = []
 
 parser = argparse.ArgumentParser(description='Find differences between Excel files')
 parser.add_argument('paths', metavar='PATH', type=str, nargs=2,
-                   help='file paths')
+                   help='files paths')
 parser.add_argument('-n', '--names', action='store_true',
                    help='match sheets by names (default: by positions)')
 
