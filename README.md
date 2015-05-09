@@ -1,7 +1,10 @@
 # xlrd_diff
 This is a simple script for "diffing" Excel files.
+It is based on xlrd, and should support .xls and .xlsx files.
 
-It is based on xlrd.
+Usage:
+
+``exceldiff file1.xls file2.xls``
 
 Notice the [ExcelCompare](https://github.com/na-ka-na/ExcelCompare)
 project has many more options, a better ouput, and support for more types of files.
