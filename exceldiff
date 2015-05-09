@@ -1,0 +1,64 @@
+#! /usr/bin/python3
+
+import xlrd
+import sys
+
+missing_sheets = []
+missing_rows = []
+missing_cols = []
+diffs = []
+
+paths = sys.argv[1:3]
+
+books = [xlrd.open_workbook(path) for path in paths]
+
+# Assume book 0 has less (or equal) sheets...
+less_sheets = 0
+if books[0].nsheets > books[1].nsheets:
+    # ... until proven otherwise
+    less_sheets = 1
+
+for s_idx in range(books[less_sheets].nsheets,
+                   books[1 - less_sheets].nsheets):
+                   # (empty range if they have the same number of sheets)
+    missing_sheets.append((1 - less_sheets, s_idx))
+
+# Cycle on common sheets:
+for s_idx in range(books[less_sheets].nsheets):
+    sheets = [b.sheet_by_index(s_idx) for b in books]
+    
+    less_rows = 0
+    if sheets[0].nrows > sheets[1].nrows:
+        less_rows = 1
+    
+    for r_idx in range(sheets[less_rows].nrows,
+                       sheets[1 - less_rows].nrows):
+        missing_rows.append((1 - less_rows, s_idx, r_idx))
+
+    less_cols = 0
+    if sheets[0].ncols > sheets[1].ncols:
+        less_cols = 1
+    
+    for c_idx in range(sheets[less_cols].ncols,
+                       sheets[1 - less_cols].ncols):
+        missing_cols.append((1 - less_cols, s_idx, c_idx))
+    
+    for r_idx in range(sheets[less_rows].nrows):
+        for c_idx in range(sheets[less_cols].ncols):
+            values = [s.cell_value(r_idx, c_idx) for s in sheets]
+            if values[0] != values[1]:
+                diffs.append((s_idx, r_idx, c_idx, values[0], values[1]))
+
+
+for book, sheet in missing_sheets:
+    print("Sheet %d missing from book %d" % (sheet, book+1))
+
+for book, sheet, row in missing_rows:
+    print("Row %d missing in sheet %d of book %d" % (row, sheet, book+1))
+
+for book, sheet, col in missing_cols:
+    print("Col %d missing in sheet %d of book %d" % (col, sheet, book+1))
+
+for sheet, row, col, val0, val1 in diffs:
+    print("Cell %s in sheet %d changed from \"%s\" to \"%s\"."
+          % (xlrd.cellname(row, col), sheet, val0, val1))
