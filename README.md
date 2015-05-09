@@ -4,7 +4,11 @@ It is based on xlrd, and should support .xls and .xlsx files.
 
 Usage:
 
-``exceldiff file1.xls file2.xls``
+``exceldiff [--names] file1.xls file2.xls``
+
+The ``--names`` option tells the script to match sheets based on their names,
+while the default is to match them based on their positions (first sheet of
+``file1.xls`` with first sheet of ``file2.xls``, and so on).
 
 Notice the [ExcelCompare](https://github.com/na-ka-na/ExcelCompare)
 project has many more options, a better ouput, and support for more types of files.
