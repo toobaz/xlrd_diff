@@ -81,10 +81,10 @@ for book, sheet in missing_sheets:
     print("Sheet %s missing from book %d" % (sheet, book+1))
 
 for book, sheet, row in missing_rows:
-    print("Row %d missing in sheet %s of book %d" % (row, sheet, book+1))
+    print("Row %s missing in sheet %s of book %d" % (row + 1, sheet, book+1))
 
 for book, sheet, col in missing_cols:
-    print("Col %d missing in sheet %s of book %d" % (col, sheet, book+1))
+    print("Col %s missing in sheet %s of book %d" % (xlrd.colname(col), sheet, book+1))
 
 for sheet, row, col, val0, val1 in diffs:
     print("Cell %s in sheet %s changed from \"%s\" to \"%s\"."
